@@ -8,6 +8,7 @@ ext {
     logbackVersion = '1.0.13'
     slf4jVersion = '1.7.5'
     spockVersion = '0.7-groovy-2.0'
+    jacocoVersion = '0.6.2.201302030002'
 }
 
 defaultTasks 'clean', 'projectReport', 'build'
@@ -36,6 +37,7 @@ dependencies {
 
     testCompile "org.spockframework:spock-core:${spockVersion}"
     testCompile "junit:junit:${junitVersion}"
+    testCompile "org.jacoco:org.jacoco.ant:${jacocoVersion}"
 }
 
 task wrapper(type: Wrapper) {
