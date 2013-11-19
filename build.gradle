@@ -35,6 +35,7 @@ dependencies {
     runtime "org.slf4j:log4j-over-slf4j:${slf4jVersion}"
 
     testCompile "org.spockframework:spock-core:${spockVersion}"
+    testCompile "junit:junit:${junitVersion}"
 }
 
 task wrapper(type: Wrapper) {

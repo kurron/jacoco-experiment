@@ -24,6 +24,7 @@
     <orderEntry type="library" exported="" name="slf4j-ext-1.7.5" level="project" />
     <orderEntry type="library" scope="TEST" name="spock-core-0.7-groovy-2.0" level="project" />
     <orderEntry type="library" exported="" name="logback-classic-1.0.13" level="project" />
+    <orderEntry type="library" scope="TEST" name="junit-4.11" level="project" />
   </component>
 </module>
 
