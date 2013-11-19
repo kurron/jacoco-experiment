@@ -49,5 +49,11 @@ task wrapper(type: Wrapper) {
 }
 
 task jacoco( dependsOn: 'classes' ) {
-    ant.taskdef( uri: 'antlib:org.jacoco.ant', resource: 'org/jacoco/ant/antlib.xml', classpath: configurations.jacoco.asPath )
+    ant.taskdef( name: 'agent', classname: 'org.jacoco.ant.AgentTask',  classpath: configurations.jacoco.asPath )
+    ant.taskdef( name: 'report', classname: 'org.jacoco.ant.ReportTask',  classpath: configurations.jacoco.asPath )
+    ant.taskdef( name: 'coverage', classname: 'org.jacoco.ant.CoverageTask',  classpath: configurations.jacoco.asPath )
+    ant.taskdef( name: 'merge', classname: 'org.jacoco.ant.MergeTask',  classpath: configurations.jacoco.asPath )
+    ant.taskdef( name: 'dump', classname: 'org.jacoco.ant.DumpTask',  classpath: configurations.jacoco.asPath )
+    ant.taskdef( name: 'instrument', classname: 'org.jacoco.ant.InstrumentTask',  classpath: configurations.jacoco.asPath )
+    ant.agent( enabled: true, property: 'agentvmparam' )
 }
