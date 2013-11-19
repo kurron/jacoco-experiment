@@ -1,0 +1,42 @@
+apply plugin: 'groovy'
+apply plugin: 'project-report'
+
+ext {
+    groovyVersion = '2.2.0'
+    hamcrestVersion = '1.3'
+    junitVersion = '4.11'
+    logbackVersion = '1.0.13'
+    slf4jVersion = '1.7.5'
+    spockVersion = '0.7-groovy-2.0'
+}
+
+defaultTasks 'clean', 'projectReport', 'build'
+
+repositories {
+    mavenCentral()
+}
+
+configurations.all {
+    exclude group: 'commons-logging'
+    exclude group: 'log4j'
+    exclude module: 'junit-dep'
+    exclude module: 'hamcrest-core'
+}
+
+dependencies {
+    compile "org.codehaus.groovy:groovy-all:${groovyVersion}"
+    compile "org.slf4j:slf4j-api:${slf4jVersion}"
+    compile "org.slf4j:slf4j-ext:${slf4jVersion}"
+    compile "org.slf4j:jcl-over-slf4j:${slf4jVersion}"
+    compile "ch.qos.logback:logback-core:${logbackVersion}"
+    compile "ch.qos.logback:logback-classic:${logbackVersion}"
+
+    runtime "org.slf4j:jul-to-slf4j:${slf4jVersion}"
+    runtime "org.slf4j:log4j-over-slf4j:${slf4jVersion}"
+
+    testCompile "org.spockframework:spock-core:${spockVersion}"
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '1.9'
+}
