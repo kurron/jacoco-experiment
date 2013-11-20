@@ -68,6 +68,6 @@ task ronbo( dependsOn: 'copyTask' ) {
         def xml = new XmlParser().parse( 'build/reports/jacoco/test/jacocoTestReport.xml' )
         assert xml
         //xml.package.counter.each { println( "​${it}​" ) }
-        xml.package.findAll{ true }.each{ println it }
+        assert xml.findAll{ it.package.counter.@type == 'CLASS' }
     }
 }
