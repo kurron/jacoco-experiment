@@ -12,7 +12,7 @@ ext {
     jacocoVersion = '0.6.3.201306030806'
 }
 
-defaultTasks 'clean', 'build', 'projectReport', 'jacocoTestReport'
+defaultTasks 'clean', 'build', 'projectReport', 'ronbo'
 
 repositories {
     mavenCentral()
@@ -54,4 +54,8 @@ dependencies {
 
 task wrapper(type: Wrapper) {
     gradleVersion = '1.9'
+}
+
+task ronbo( dependsOn: 'jacocoTestReport' ) {
+    logger.quiet 'Running ronbo task.'
 }
