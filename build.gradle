@@ -1,5 +1,6 @@
 apply plugin: 'groovy'
 apply plugin: 'project-report'
+apply plugin: 'jacoco'
 
 ext {
     groovyVersion = '2.2.0'
@@ -11,14 +12,10 @@ ext {
     jacocoVersion = '0.6.3.201306030806'
 }
 
-defaultTasks 'clean', 'projectReport', 'build'
+defaultTasks 'clean', 'build', 'projectReport', 'jacocoTestReport'
 
 repositories {
     mavenCentral()
-}
-
-configurations {
-    jacoco
 }
 
 configurations.all {
@@ -26,6 +23,18 @@ configurations.all {
     exclude group: 'log4j'
     exclude module: 'junit-dep'
     exclude module: 'hamcrest-core'
+}
+
+jacoco {
+    toolVersion = jacocoVersion
+}
+
+jacocoTestReport {
+    reports {
+        xml.enabled true
+        csv.enabled true
+        html.enabled true
+    }
 }
 
 dependencies {
@@ -41,19 +50,8 @@ dependencies {
 
     testCompile "org.spockframework:spock-core:${spockVersion}"
     testCompile "junit:junit:${junitVersion}"
-    jacoco "org.jacoco:org.jacoco.ant:${jacocoVersion}"
 }
 
 task wrapper(type: Wrapper) {
     gradleVersion = '1.9'
-}
-
-task jacoco( dependsOn: 'classes' ) {
-    ant.taskdef( name: 'agent', classname: 'org.jacoco.ant.AgentTask',  classpath: configurations.jacoco.asPath )
-    ant.taskdef( name: 'report', classname: 'org.jacoco.ant.ReportTask',  classpath: configurations.jacoco.asPath )
-    ant.taskdef( name: 'coverage', classname: 'org.jacoco.ant.CoverageTask',  classpath: configurations.jacoco.asPath )
-    ant.taskdef( name: 'merge', classname: 'org.jacoco.ant.MergeTask',  classpath: configurations.jacoco.asPath )
-    ant.taskdef( name: 'dump', classname: 'org.jacoco.ant.DumpTask',  classpath: configurations.jacoco.asPath )
-    ant.taskdef( name: 'instrument', classname: 'org.jacoco.ant.InstrumentTask',  classpath: configurations.jacoco.asPath )
-    ant.agent( enabled: true, property: 'agentvmparam' )
 }
