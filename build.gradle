@@ -56,6 +56,18 @@ task wrapper(type: Wrapper) {
     gradleVersion = '1.9'
 }
 
-task ronbo( dependsOn: 'jacocoTestReport' ) {
-    logger.quiet 'Running ronbo task.'
+task copyTask( type: Copy, dependsOn: 'jacocoTestReport' ) {
+    from 'report.dtd'
+    into 'build/reports/jacoco/test'
+}
+
+task ronbo( dependsOn: 'copyTask' ) {
+
+    doFirst {
+        logger.quiet 'Running ronbo task.'
+        def xml = new XmlParser().parse( 'build/reports/jacoco/test/jacocoTestReport.xml' )
+        assert xml
+        //xml.package.counter.each { println( "​${it}​" ) }
+        xml.package.findAll{ true }.each{ println it }
+    }
 }
