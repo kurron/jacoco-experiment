@@ -7,7 +7,7 @@ import spock.lang.Specification
 /**
  * Test drives the Simple Service.
  */
-//@Ignore( 'Just to trigger a coverage failure' )
+@Ignore( 'Just to trigger a coverage failure' )
 @Slf4j
 class UntestedServiceUnitTest extends Specification {
 
