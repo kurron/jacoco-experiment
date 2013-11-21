@@ -1,12 +1,14 @@
 package org.kurron.jacoco
 
 import groovy.util.logging.Slf4j
+import spock.lang.Ignore
 import spock.lang.Specification
 
 /**
  * Test drives the Simple Service.
  */
 @Slf4j
+@Ignore
 class XmlUnitTest extends Specification {
 
     def 'exercise happy path'() {

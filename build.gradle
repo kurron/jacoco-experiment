@@ -66,8 +66,8 @@ task ronbo( dependsOn: 'copyTask' ) {
     doFirst {
         logger.quiet 'Running ronbo task.'
         def xml = new XmlParser().parse( 'build/reports/jacoco/test/jacocoTestReport.xml' )
-        assert xml
-        //xml.package.counter.each { println( "​${it}​" ) }
-        assert xml.findAll{ it.package.counter.@type == 'CLASS' }
+        if ( xml.package.class.counter.findAll{ it.@type == 'CLASS' }.collect { it.@missed >= it.@covered }.any { !it } ) {
+            throw new IllegalStateException( 'Not enough code coverage! Consult build/reports/jacoco/test/html/index.html for details.' )
+        }
     }
 }
