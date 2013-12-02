@@ -10,7 +10,7 @@ ext {
     slf4jVersion = '1.7.5'
     spockVersion = '0.7-groovy-2.0'
     jacocoVersion = '0.6.3.201306030806'
-    jacocoExclude = ['org/kurron/jacoco/SkippedService','org/kurron/jacoco/UntestedService']
+    jacocoExclude = ['org/kurron/jacoco/ignored/']
 }
 
 defaultTasks 'clean', 'build', 'projectReport'
@@ -66,9 +66,16 @@ task ronbo( dependsOn: 'copyTask' ) {
     // Since the JaCoCo plug in does not honor excludes or break the build if coverage thresholds are crossed, we have to do it by hand.
     doFirst {
         def xml = new XmlParser().parse( 'build/reports/jacoco/test/jacocoTestReport.xml' )
-        def missedCoverage = xml.package.class.findAll { clazz -> !jacocoExclude.contains( clazz.@name ) }.collect{ it.counter }.flatten().findAll{ it.@type == 'INSTRUCTION' }.flatten().collect { it.@missed >= it.@covered }.any { it }
+        def filtered = xml.package.class.findAll { clazz -> !jacocoExclude.any { clazz.@name.contains( it ) } }
+        def instructions = filtered.collect{ it.counter }.flatten().findAll{ it.@type == 'INSTRUCTION' }.flatten()
+        def offenders = []
+        def missedCoverage = instructions.collect {
+            boolean hasCoverage = it.@missed >= it.@covered
+            if ( hasCoverage ) { offenders << it.parent().attributes().name }
+            hasCoverage
+        }.any()
         if ( missedCoverage ) {
-            throw new IllegalStateException( "Not enough code coverage! Consult ${buildDir}/reports/jacoco/test/html/index.html for details." )
+            throw new IllegalStateException( "Not enough code coverage! Consult ${buildDir}/reports/jacoco/test/html/index.html for details. Offending classes: $offenders" )
         }
         else {
             logger.quiet 'Adequate code coverage detected.'

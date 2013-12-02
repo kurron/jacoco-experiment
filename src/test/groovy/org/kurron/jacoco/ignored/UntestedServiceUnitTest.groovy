@@ -1,4 +1,4 @@
-package org.kurron.jacoco
+package org.kurron.jacoco.ignored
 
 import groovy.util.logging.Slf4j
 import spock.lang.Ignore
